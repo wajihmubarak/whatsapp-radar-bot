@@ -1,6 +1,10 @@
-# الخطوة الأولى: بناء بيئة Node.js وتثبيت مكتبات الواتساب
-FROM node:18-alpine AS node_builder
+# الخطوة الأولى: استخدام نسخة نود كاملة ومستقرة بدل alpine عشان أدوات البناء تكون متوفرة
+FROM node:18-slim AS node_builder
 WORKDIR /app
+
+# تثبيت أدوات البناء الأساسية المطلوبة لمكتبات الواتساب الكبيرة
+RUN apt-get update && apt-get install -y python3 make g++ git && rm -rf /var/lib/apt/lists/*
+
 COPY package*.json ./
 RUN npm install
 COPY index.js ./
